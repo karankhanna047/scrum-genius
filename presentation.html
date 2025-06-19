@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrumGenius AI - Revolutionizing Agile Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #facc15 0%, #fde047 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: #facc15;
+        }
+
+        h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #facc15;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #9ca3af;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: #facc15;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
+            background: #fde047;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 1px solid #374151;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #facc15;
+            box-shadow: 0 10px 30px rgba(250, 204, 21, 0.2);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #facc15;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .metrics {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #facc15;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+
+        .architecture-diagram {
+            background: #1f2937;
+            border: 2px solid #374151;
+            border-radius: 1rem;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-step {
+            background: #111827;
+            border: 2px solid #facc15;
+            border-radius: 1rem;
+            padding: 2rem;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            right: -3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #facc15;
+            font-size: 2rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .tech-badge {
+            background: #1f2937;
+            border: 1px solid #facc15;
+            color: #facc15;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+        }
+
+        .cta-button {
+            background: #facc15;
+            color: #000;
+            padding: 1.25rem 3rem;
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            background: #fde047;
+            transform: scale(1.05);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin: 3rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #facc15;
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 1rem 0;
+            width: 50%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+            padding-right: 3rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 3rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #facc15;
+            border-radius: 50%;
+            top: 1.5rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -10px;
+        }
+
+        .roi-calculator {
+            background: #1f2937;
+            border: 2px solid #374151;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .roi-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #374151;
+        }
+
+        .roi-row:last-child {
+            border-bottom: none;
+            padding-top: 2rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #facc15;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.5rem; }
+            .subtitle { font-size: 1.1rem; }
+            .metrics { gap: 2rem; }
+            .flow-container { flex-direction: column; }
+            .flow-arrow { display: none; }
+            .timeline-item, .timeline-item:nth-child(even) {
+                width: 100%;
+                left: 0;
+                text-align: left;
+                padding-left: 3rem;
+                padding-right: 0;
+            }
+            .timeline::before { left: 0; }
+            .timeline-dot { left: -10px !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide">
+        <div class="slide-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"></path>
+                        <path d="M2 17L12 22L22 17"></path>
+                        <path d="M2 12L12 17L22 12"></path>
+                    </svg>
+                </div>
+                <div style="text-align: left;">
+                    <h1 style="font-size: 3rem; margin-bottom: 0;">ScrumGenius</h1>
+                    <p style="color: #9ca3af; font-size: 1.2rem;">AI-Powered Agile Management</p>
+                </div>
+            </div>
+            
+            <p class="subtitle">Revolutionizing Scrum with Artificial Intelligence</p>
+            
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value">93%</div>
+                    <div class="metric-label">Time Saved</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">$480K</div>
+                    <div class="metric-label">Annual ROI</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">4 Mo</div>
+                    <div class="metric-label">Payback Period</div>
+                </div>
+            </div>
+            
+            <button class="cta-button">Transform Your Agile Process</button>
+        </div>
+    </div>
+
+    <!-- Slide 2: Problem Statement -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>The Challenge</h2>
+            <p class="subtitle">Manual Scrum processes are holding teams back</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Time Drain</h3>
+                    <p style="color: #9ca3af; line-height: 1.6;">Teams spend 30% of their time on administrative tasks instead of building products</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Poor Visibility</h3>
+                    <p style="color: #9ca3af; line-height: 1.6;">Project status updates are delayed, making it hard to identify and resolve blockers quickly</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Inconsistent Planning</h3>
+                    <p style="color: #9ca3af; line-height: 1.6;">Story pointing varies by team member, making velocity tracking unreliable</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Manual Updates</h3>
+                    <p style="color: #9ca3af; line-height: 1.6;">Board updates are error-prone and often forgotten, leading to inaccurate sprint tracking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Solution Overview -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Introducing ScrumGenius AI</h2>
+            <p class="subtitle">Your intelligent Scrum automation platform</p>
+            
+            <div class="flow-container">
+                <div class="flow-step">
+                    <h3 style="font-size: 1.5rem; color: #facc15;">📝</h3>
+                    <h4 style="color: #fff; font-size: 1.2rem;">Natural Input</h4>
+                    <p style="color: #9ca3af; font-size: 0.9rem;">Teams provide updates in plain language</p>
+                    <div class="flow-arrow">→</div>
+                </div>
+                <div class="flow-step">
+                    <h3 style="font-size: 1.5rem; color: #facc15;">🧠</h3>
+                    <h4 style="color: #fff; font-size: 1.2rem;">AI Processing</h4>
+                    <p style="color: #9ca3af; font-size: 0.9rem;">Advanced NLP extracts tasks & insights</p>
+                    <div class="flow-arrow">→</div>
+                </div>
+                <div class="flow-step">
+                    <h3 style="font-size: 1.5rem; color: #facc15;">🚀</h3>
+                    <h4 style="color: #fff; font-size: 1.2rem;">Automated Actions</h4>
+                    <p style="color: #9ca3af; font-size: 0.9rem;">Boards update, tasks created, teams notified</p>
+                </div>
+            </div>
+            
+            <div class="metrics" style="margin-top: 4rem;">
+                <div class="metric">
+                    <div class="metric-value">5 min</div>
+                    <div class="metric-label">Daily Standups</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2 min</div>
+                    <div class="metric-label">Board Updates</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">95%</div>
+                    <div class="metric-label">Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Key Features -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Powerful Features</h2>
+            <p class="subtitle">Everything you need for AI-powered Scrum</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Epic Generator</h3>
+                    <ul style="color: #9ca3af; line-height: 1.8; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Transform requirements into epics</li>
+                        <li>Auto-generate user stories</li>
+                        <li>Consistent story pointing</li>
+                        <li>Dependency mapping</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Smart Updates</h3>
+                    <ul style="color: #9ca3af; line-height: 1.8; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Natural language processing</li>
+                        <li>Automatic board updates</li>
+                        <li>Blocker detection</li>
+                        <li>Task creation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">AI Analytics</h3>
+                    <ul style="color: #9ca3af; line-height: 1.8; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Sprint predictions</li>
+                        <li>Risk analysis</li>
+                        <li>Team insights</li>
+                        <li>Performance tracking</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">AI Assistant</h3>
+                    <ul style="color: #9ca3af; line-height: 1.8; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>24/7 Scrum guidance</li>
+                        <li>Best practice suggestions</li>
+                        <li>Instant answers</li>
+                        <li>Team coaching</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Architecture -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Enterprise Architecture</h2>
+            <p class="subtitle">Secure, scalable, and integrated</p>
+            
+            <div class="architecture-diagram">
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #facc15; font-size: 1.5rem; margin-bottom: 1rem;">Frontend Layer</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">React</span>
+                        <span class="tech-badge">TypeScript</span>
+                        <span class="tech-badge">Tailwind CSS</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #facc15; font-size: 1.5rem; margin-bottom: 1rem;">AI Services</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Azure OpenAI</span>
+                        <span class="tech-badge">GPT-4</span>
+                        <span class="tech-badge">Custom ML Models</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #facc15; font-size: 1.5rem; margin-bottom: 1rem;">Backend Infrastructure</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">.NET 8</span>
+                        <span class="tech-badge">Azure Functions</span>
+                        <span class="tech-badge">Cosmos DB</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: #facc15; font-size: 1.5rem; margin-bottom: 1rem;">Integrations</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Jira API</span>
+                        <span class="tech-badge">Azure DevOps</span>
+                        <span class="tech-badge">Microsoft Teams</span>
+                        <span class="tech-badge">Azure AD</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="color: #9ca3af; margin-top: 2rem;">🔒 Enterprise-grade security with Azure AD authentication and role-based access control</p>
+        </div>
+    </div>
+
+    <!-- Slide 6: Workflow Demo -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>See It In Action</h2>
+            <p class="subtitle">A typical day with ScrumGenius AI</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 style="color: #facc15; font-size: 1.3rem;">9:00 AM</h3>
+                    <p style="color: #fff; font-weight: 600;">Daily Standup</p>
+                    <p style="color: #9ca3af;">Team members speak naturally: "Finished the API, starting on UI"</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 style="color: #facc15; font-size: 1.3rem;">9:05 AM</h3>
+                    <p style="color: #fff; font-weight: 600;">AI Processing</p>
+                    <p style="color: #9ca3af;">ScrumGenius updates boards, moves tickets, creates tasks</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 style="color: #facc15; font-size: 1.3rem;">9:06 AM</h3>
+                    <p style="color: #fff; font-weight: 600;">Team Notification</p>
+                    <p style="color: #9ca3af;">Updates posted to Teams, blockers flagged to managers</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3 style="color: #facc15; font-size: 1.3rem;">Throughout Day</h3>
+                    <p style="color: #fff; font-weight: 600;">Continuous Intelligence</p>
+                    <p style="color: #9ca3af;">Real-time insights, predictions, and recommendations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: ROI Analysis -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Return on Investment</h2>
+            <p class="subtitle">For a 50-person engineering team</p>
+            
+            <div class="roi-calculator">
+                <div class="roi-row">
+                    <span>Time saved per person per month</span>
+                    <span style="color: #facc15;">8 hours</span>
+                </div>
+                <div class="roi-row">
+                    <span>Total hours saved monthly</span>
+                    <span style="color: #facc15;">400 hours</span>
+                </div>
+                <div class="roi-row">
+                    <span>Value at $100/hour</span>
+                    <span style="color: #facc15;">$40,000/month</span>
+                </div>
+                <div class="roi-row">
+                    <span>Annual value</span>
+                    <span style="color: #facc15;">$480,000</span>
+                </div>
+                <div class="roi-row">
+                    <span>Implementation cost</span>
+                    <span style="color: #ef4444;">-$150,000</span>
+                </div>
+                <div class="roi-row">
+                    <span>First Year ROI</span>
+                    <span>320%</span>
+                </div>
+            </div>
+            
+            <div class="metrics" style="margin-top: 3rem;">
+                <div class="metric">
+                    <div class="metric-value">🚀</div>
+                    <div class="metric-label">Faster Delivery</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">😊</div>
+                    <div class="metric-label">Happier Teams</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">📈</div>
+                    <div class="metric-label">Better Insights</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Implementation Timeline -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Implementation Roadmap</h2>
+            <p class="subtitle">From concept to reality in 20 weeks</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Phase 1: Foundation</h3>
+                    <p style="color: #facc15; font-weight: 600;">Weeks 1-4</p>
+                    <ul style="color: #9ca3af; line-height: 1.6; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Azure infrastructure setup</li>
+                        <li>Authentication configuration</li>
+                        <li>API connections</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Phase 2: AI Core</h3>
+                    <p style="color: #facc15; font-weight: 600;">Weeks 5-8</p>
+                    <ul style="color: #9ca3af; line-height: 1.6; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Epic generator</li>
+                        <li>NLP processor</li>
+                        <li>Board update engine</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Phase 3: Integration</h3>
+                    <p style="color: #facc15; font-weight: 600;">Weeks 9-12</p>
+                    <ul style="color: #9ca3af; line-height: 1.6; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Teams integration</li>
+                        <li>Board synchronization</li>
+                        <li>Database setup</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Phase 4: Analytics</h3>
+                    <p style="color: #facc15; font-weight: 600;">Weeks 13-16</p>
+                    <ul style="color: #9ca3af; line-height: 1.6; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Dashboards</li>
+                        <li>Predictive analytics</li>
+                        <li>Reporting framework</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3 style="color: #fff; font-size: 1.5rem;">Phase 5: Launch</h3>
+                    <p style="color: #facc15; font-weight: 600;">Weeks 17-20</p>
+                    <ul style="color: #9ca3af; line-height: 1.6; text-align: left; padding-left: 1.5rem; margin-top: 1rem;">
+                        <li>Pilot team testing</li>
+                        <li>AI fine-tuning</li>
+                        <li>Full rollout</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Success Metrics -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Measuring Success</h2>
+            <p class="subtitle">Clear KPIs for continuous improvement</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3 style="color: #facc15; font-size: 1.5rem;">Efficiency Metrics</h3>
+                    <div style="margin-top: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span style="color: #9ca3af;">Board update time</span>
+                            <span style="color: #10b981;">↓ 93%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span style="color: #9ca3af;">Sprint planning duration</span>
+                            <span style="color: #10b981;">↓ 50%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #9ca3af;">Status reporting time</span>
+                            <span style="color: #10b981;">↓ 87%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: #facc15; font-size: 1.5rem;">Quality Metrics</h3>
+                    <div style="margin-top: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span style="color: #9ca3af;">Story template compliance</span>
+                            <span style="color: #10b981;">100%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span style="color: #9ca3af;">Estimation accuracy</span>
+                            <span style="color: #10b981;">↑ 45%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #9ca3af;">Sprint goal achievement</span>
+                            <span style="color: #10b981;">↑ 23%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <h3 style="color: #facc15; font-size: 1.5rem;">Team Satisfaction</h3>
+                    <div style="margin-top: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span style="color: #9ca3af;">Developer happiness</span>
+                            <span style="color: #10b981;">8.5/10</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span style="color: #9ca3af;">Process satisfaction</span>
+                            <span style="color: #10b981;">↑ 67%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #9ca3af;">Tool adoption rate</span>
+                            <span style="color: #10b981;">94%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Call to Action -->
+    <div class="slide">
+        <div class="slide-content">
+            <div class="logo" style="justify-content: center;">
+                <div class="logo-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"></path>
+                        <path d="M2 17L12 22L22 17"></path>
+                        <path d="M2 12L12 17L22 12"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <h2>Ready to Transform Your Agile Process?</h2>
+            <p class="subtitle">Join the AI-powered Scrum revolution</p>
+            
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value">20</div>
+                    <div class="metric-label">Weeks to Launch</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">4</div>
+                    <div class="metric-label">Month Payback</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">∞</div>
+                    <div class="metric-label">Possibilities</div>
+                </div>
+            </div>
+            
+            <button class="cta-button">Schedule a Demo</button>
+            
+            <p style="color: #9ca3af; margin-top: 3rem; font-size: 1.1rem;">
+                Contact us: hello@scrumgenius.ai | 1-800-SCRUM-AI
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth scrolling between slides
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' && currentSlide < slides.length - 1) {
+                currentSlide++;
+                slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+            } else if (e.key === 'ArrowUp' && currentSlide > 0) {
+                currentSlide--;
+                slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        // Add parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+            
+            document.querySelectorAll('.logo-icon').forEach(icon => {
+                icon.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
