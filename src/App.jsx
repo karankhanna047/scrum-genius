@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Zap, Brain, Users, TrendingUp, AlertCircle, CheckCircle, Clock, BarChart3, Sparkles, MessageSquare, Target, Lightbulb, Activity, ChevronRight, Menu, X, Home, FileText, Bot, Settings, LogOut, Star, ArrowUp, ArrowDown } from 'lucide-react';
+import { Calendar, Zap, Brain, Users, TrendingUp, AlertCircle, CheckCircle, Clock, BarChart3, Sparkles, MessageSquare, Target, Lightbulb, Activity, ChevronRight, Menu, X, Home, FileText, Bot, Settings, LogOut, Star, ArrowUp, ArrowDown, BookOpen, Layout, ChevronDown } from 'lucide-react';
 
 const App = () => {
+  const [currentView, setCurrentView] = useState('home');
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowNotification(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (currentView === 'dashboard') {
+      const timer = setTimeout(() => setShowNotification(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentView]);
 
   // Logo Component
   const Logo = () => (
@@ -27,17 +31,657 @@ const App = () => {
     </div>
   );
 
-  // Navigation Component
-  const Navigation = () => (
-    <div className={`fixed left-0 top-0 h-full bg-gray-900 transition-all duration-300 z-40 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-8">
-          <Logo />
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-400 hover:text-white lg:hidden">
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+  // Top Navigation Bar
+  const TopNavigation = () => (
+    <div className="fixed top-0 left-0 right-0 bg-gray-900 border-b border-gray-800 z-50">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Logo />
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setCurrentView('home')}
+            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              currentView === 'home' ? 'bg-yellow-400 text-black' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            Home
+          </button>
+          <button
+            onClick={() => setCurrentView('dashboard')}
+            className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center space-x-2 ${
+              currentView === 'dashboard' ? 'bg-yellow-400 text-black' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Layout className="w-4 h-4" />
+            <span>Dashboard Demo</span>
+          </button>
+          <button
+            onClick={() => setCurrentView('documentation')}
+            className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center space-x-2 ${
+              currentView === 'documentation' ? 'bg-yellow-400 text-black' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Documentation</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Home Page Component (Presentation)
+  const HomePage = () => {
+    const slides = [
+      // Slide 1: Title
+      <div key="1" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-4 mb-12">
+            <div className="relative">
+              <div className="w-20 h-20 bg-yellow-400 rounded-xl flex items-center justify-center">
+                <Brain className="w-12 h-12 text-black" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-4 h-4 bg-yellow-300 rounded-full animate-pulse"></div>
+            </div>
+            <div className="text-left">
+              <h1 className="text-5xl font-black text-white">ScrumGenius</h1>
+              <p className="text-gray-400 text-lg">AI-Powered Agile Management</p>
+            </div>
+          </div>
+          
+          <p className="text-2xl text-gray-400 mb-12">Revolutionizing Scrum with Artificial Intelligence</p>
+          
+          <div className="flex justify-center gap-16 mb-12">
+            <div className="text-center">
+              <div className="text-4xl font-black text-yellow-400 mb-2">93%</div>
+              <div className="text-gray-400">Time Saved</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-black text-yellow-400 mb-2">$480K</div>
+              <div className="text-gray-400">Annual ROI</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-black text-yellow-400 mb-2">4 Mo</div>
+              <div className="text-gray-400">Payback Period</div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => setCurrentView('dashboard')}
+            className="bg-yellow-400 text-black px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-300 transition-all transform hover:scale-105"
+          >
+            Transform Your Agile Process
+          </button>
+        </div>
+      </div>,
+
+      // Slide 2: Problem Statement
+      <div key="2" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">The Challenge</h2>
+          <p className="text-xl text-gray-400 mb-12">Manual Scrum processes are holding teams back</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all">
+              <div className="text-4xl mb-4">⏱️</div>
+              <h3 className="text-xl font-bold text-white mb-2">Time Drain</h3>
+              <p className="text-gray-400">Teams spend 30% of their time on administrative tasks instead of building products</p>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all">
+              <div className="text-4xl mb-4">📊</div>
+              <h3 className="text-xl font-bold text-white mb-2">Poor Visibility</h3>
+              <p className="text-gray-400">Project status updates are delayed, making it hard to identify blockers quickly</p>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all">
+              <div className="text-4xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold text-white mb-2">Inconsistent Planning</h3>
+              <p className="text-gray-400">Story pointing varies by team member, making velocity tracking unreliable</p>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all">
+              <div className="text-4xl mb-4">🔄</div>
+              <h3 className="text-xl font-bold text-white mb-2">Manual Updates</h3>
+              <p className="text-gray-400">Board updates are error-prone and often forgotten, leading to inaccurate tracking</p>
+            </div>
+          </div>
+        </div>
+      </div>,
+
+      // Slide 3: Solution Overview
+      <div key="3" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Introducing ScrumGenius AI</h2>
+          <p className="text-xl text-gray-400 mb-12">Your intelligent Scrum automation platform</p>
+          
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
+            <div className="bg-gray-800 border-2 border-yellow-400 rounded-xl p-6 relative">
+              <div className="text-3xl mb-2">📝</div>
+              <h4 className="text-lg font-bold text-white mb-2">Natural Input</h4>
+              <p className="text-gray-400 text-sm">Teams provide updates in plain language</p>
+              <ChevronRight className="absolute -right-10 top-1/2 transform -translate-y-1/2 w-8 h-8 text-yellow-400 hidden md:block" />
+            </div>
+            <div className="bg-gray-800 border-2 border-yellow-400 rounded-xl p-6 relative">
+              <div className="text-3xl mb-2">🧠</div>
+              <h4 className="text-lg font-bold text-white mb-2">AI Processing</h4>
+              <p className="text-gray-400 text-sm">Advanced NLP extracts tasks & insights</p>
+              <ChevronRight className="absolute -right-10 top-1/2 transform -translate-y-1/2 w-8 h-8 text-yellow-400 hidden md:block" />
+            </div>
+            <div className="bg-gray-800 border-2 border-yellow-400 rounded-xl p-6">
+              <div className="text-3xl mb-2">🚀</div>
+              <h4 className="text-lg font-bold text-white mb-2">Automated Actions</h4>
+              <p className="text-gray-400 text-sm">Boards update, tasks created, teams notified</p>
+            </div>
+          </div>
+          
+          <div className="flex justify-center gap-16">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">5 min</div>
+              <div className="text-gray-400">Daily Standups</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">2 min</div>
+              <div className="text-gray-400">Board Updates</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-400 mb-2">95%</div>
+              <div className="text-gray-400">Accuracy</div>
+            </div>
+          </div>
+        </div>
+      </div>,
+
+      // Slide 4: Key Features
+      <div key="4" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Powerful Features</h2>
+          <p className="text-xl text-gray-400 mb-12">Everything you need for AI-powered Scrum</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all text-left">
+              <div className="text-3xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold text-white mb-3">Epic Generator</h3>
+              <ul className="text-gray-400 space-y-2">
+                <li>• Transform requirements into epics</li>
+                <li>• Auto-generate user stories</li>
+                <li>• Consistent story pointing</li>
+                <li>• Dependency mapping</li>
+              </ul>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all text-left">
+              <div className="text-3xl mb-4">💬</div>
+              <h3 className="text-xl font-bold text-white mb-3">Smart Updates</h3>
+              <ul className="text-gray-400 space-y-2">
+                <li>• Natural language processing</li>
+                <li>• Automatic board updates</li>
+                <li>• Blocker detection</li>
+                <li>• Task creation</li>
+              </ul>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all text-left">
+              <div className="text-3xl mb-4">📊</div>
+              <h3 className="text-xl font-bold text-white mb-3">AI Analytics</h3>
+              <ul className="text-gray-400 space-y-2">
+                <li>• Sprint predictions</li>
+                <li>• Risk analysis</li>
+                <li>• Team insights</li>
+                <li>• Performance tracking</li>
+              </ul>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 hover:border-yellow-400 transition-all text-left">
+              <div className="text-3xl mb-4">🤖</div>
+              <h3 className="text-xl font-bold text-white mb-3">AI Assistant</h3>
+              <ul className="text-gray-400 space-y-2">
+                <li>• 24/7 Scrum guidance</li>
+                <li>• Best practice suggestions</li>
+                <li>• Instant answers</li>
+                <li>• Team coaching</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>,
+
+      // Slide 5: Architecture
+      <div key="5" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Enterprise Architecture</h2>
+          <p className="text-xl text-gray-400 mb-12">Secure, scalable, and integrated</p>
+          
+          <div className="bg-gray-800 border-2 border-gray-700 rounded-xl p-8">
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-2xl font-bold text-yellow-400 mb-4">Frontend Layer</h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">React</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">TypeScript</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Tailwind CSS</span>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-bold text-yellow-400 mb-4">AI Services</h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Azure OpenAI</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">GPT-4</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Custom ML Models</span>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-bold text-yellow-400 mb-4">Backend Infrastructure</h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">.NET 8</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Azure Functions</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Cosmos DB</span>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-bold text-yellow-400 mb-4">Integrations</h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Jira API</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Azure DevOps</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Microsoft Teams</span>
+                  <span className="bg-gray-900 border border-yellow-400 text-yellow-400 px-4 py-2 rounded-full font-semibold">Azure AD</span>
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-gray-400 mt-8">🔒 Enterprise-grade security with Azure AD authentication and role-based access control</p>
+          </div>
+        </div>
+      </div>,
+
+      // Slide 6: ROI Analysis
+      <div key="6" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Return on Investment</h2>
+          <p className="text-xl text-gray-400 mb-12">For a 50-person engineering team</p>
+          
+          <div className="bg-gray-800 border-2 border-gray-700 rounded-xl p-8 mb-8">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-gray-700">
+                <span className="text-gray-300">Time saved per person per month</span>
+                <span className="text-yellow-400 font-bold">8 hours</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-gray-700">
+                <span className="text-gray-300">Total hours saved monthly</span>
+                <span className="text-yellow-400 font-bold">400 hours</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-gray-700">
+                <span className="text-gray-300">Value at $100/hour</span>
+                <span className="text-yellow-400 font-bold">$40,000/month</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-gray-700">
+                <span className="text-gray-300">Annual value</span>
+                <span className="text-yellow-400 font-bold">$480,000</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-gray-700">
+                <span className="text-gray-300">Implementation cost</span>
+                <span className="text-red-400 font-bold">-$150,000</span>
+              </div>
+              <div className="flex justify-between items-center py-6 text-xl">
+                <span className="text-white font-bold">First Year ROI</span>
+                <span className="text-yellow-400 font-bold text-3xl">320%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex justify-center gap-16">
+            <div className="text-center">
+              <div className="text-4xl mb-2">🚀</div>
+              <div className="text-gray-400">Faster Delivery</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">😊</div>
+              <div className="text-gray-400">Happier Teams</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">📈</div>
+              <div className="text-gray-400">Better Insights</div>
+            </div>
+          </div>
+        </div>
+      </div>,
+
+      // Slide 7: Call to Action
+      <div key="7" className="min-h-screen flex items-center justify-center px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-4 mb-12">
+            <div className="w-20 h-20 bg-yellow-400 rounded-xl flex items-center justify-center">
+              <Brain className="w-12 h-12 text-black" />
+            </div>
+          </div>
+          
+          <h2 className="text-4xl font-bold text-yellow-400 mb-4">Ready to Transform Your Agile Process?</h2>
+          <p className="text-xl text-gray-400 mb-12">Join the AI-powered Scrum revolution</p>
+          
+          <div className="flex justify-center gap-16 mb-12">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-yellow-400 mb-2">20</div>
+              <div className="text-gray-400">Weeks to Launch</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-yellow-400 mb-2">4</div>
+              <div className="text-gray-400">Month Payback</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-yellow-400 mb-2">∞</div>
+              <div className="text-gray-400">Possibilities</div>
+            </div>
+          </div>
+          
+          <button 
+            onClick={() => setCurrentView('dashboard')}
+            className="bg-yellow-400 text-black px-8 py-4 rounded-lg text-lg font-bold hover:bg-yellow-300 transition-all transform hover:scale-105"
+          >
+            Schedule a Demo
+          </button>
+          
+          <p className="text-gray-400 mt-8">
+            Contact us: hello@scrumgenius.ai | 1-800-SCRUM-AI
+          </p>
+        </div>
+      </div>
+    ];
+
+    useEffect(() => {
+      const handleKeyDown = (e) => {
+        if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+          setCurrentSlide(currentSlide + 1);
+        } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+          setCurrentSlide(currentSlide - 1);
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [currentSlide, slides.length]);
+
+    return (
+      <div className="pt-16">
+        {slides[currentSlide]}
+        
+        {/* Slide Navigation */}
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
+          <button
+            onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+            disabled={currentSlide === 0}
+            className="p-2 rounded-full bg-gray-800 text-white disabled:opacity-50"
+          >
+            <ChevronRight className="w-5 h-5 transform rotate-180" />
+          </button>
+          <div className="flex space-x-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  currentSlide === idx ? 'bg-yellow-400 w-8' : 'bg-gray-600'
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+            disabled={currentSlide === slides.length - 1}
+            className="p-2 rounded-full bg-gray-800 text-white disabled:opacity-50"
+          >
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
         
+        {/* Slide Counter */}
+        <div className="fixed bottom-8 right-8 text-gray-400">
+          {currentSlide + 1} / {slides.length}
+        </div>
+      </div>
+    );
+  };
+
+  // Documentation Page
+  const DocumentationPage = () => (
+    <div className="pt-20 pb-12 px-6 max-w-6xl mx-auto">
+      <div className="prose prose-invert max-w-none">
+        <h1 className="text-4xl font-bold text-yellow-400 mb-8">AI-Powered Scrum Automation System</h1>
+        <h2 className="text-2xl font-semibold text-gray-300 mb-6">Comprehensive Implementation Plan & Design Document</h2>
+        
+        <div className="bg-gray-800 rounded-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">Executive Summary</h2>
+          <p className="text-gray-300 mb-4">
+            This document outlines a comprehensive AI-powered solution to automate Scrum processes, board management, and team coordination. 
+            The system leverages Generative AI to transform how teams manage sprints, update boards, and communicate progress, 
+            resulting in significant time savings and improved project visibility.
+          </p>
+          
+          <h3 className="text-xl font-semibold text-yellow-400 mb-3">Key Capabilities</h3>
+          <ul className="list-disc list-inside text-gray-300 space-y-2">
+            <li><strong>Automated Epic & Story Generation</strong> from business requirements</li>
+            <li><strong>Intelligent Board Updates</strong> from daily team summaries</li>
+            <li><strong>AI-Powered Dashboards</strong> for PM/Scrum Master insights</li>
+            <li><strong>Automated Teams Integration</strong> for seamless communication</li>
+            <li><strong>Predictive Analytics</strong> for sprint planning and risk management</li>
+          </ul>
+        </div>
+
+        <div className="bg-gray-800 rounded-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">1. Solution Architecture</h2>
+          
+          <h3 className="text-xl font-semibold text-yellow-400 mb-3">1.1 High-Level Architecture</h3>
+          <div className="bg-gray-900 rounded-lg p-6 mb-6 font-mono text-sm text-gray-300">
+            <pre>{`┌─────────────────────────────────────────────────────────────────┐
+│                        Frontend Layer                            │
+├─────────────────────┬───────────────────┬───────────────────────┤
+│   PM Dashboard      │  Scrum Master     │   Team Member         │
+│   (React/Angular)   │  Dashboard        │   Interface           │
+└────────┬────────────┴────────┬──────────┴────────┬──────────────┘
+         │                     │                   │
+┌────────▼─────────────────────▼───────────────────▼──────────────┐
+│                     API Gateway (Azure API Management)           │
+│                     Authentication: Azure AAD/SPN                │
+└────────┬─────────────────────────────────────────────────────────┘
+         │
+┌────────▼─────────────────────────────────────────────────────────┐
+│                    Core AI Services Layer                        │
+├─────────────────┬────────────────┬────────────────┬─────────────┤
+│  Epic/Story     │  Board Update  │  Analytics &   │  NLP        │
+│  Generator      │  Engine        │  Insights      │  Processor  │
+└─────────────────┴────────────────┴────────────────┴─────────────┘`}</pre>
+          </div>
+          
+          <h3 className="text-xl font-semibold text-yellow-400 mb-3">1.2 Technology Stack</h3>
+          <ul className="list-disc list-inside text-gray-300 space-y-2">
+            <li><strong>AI/ML:</strong> Azure OpenAI Service (GPT-4), Azure Cognitive Services</li>
+            <li><strong>Backend:</strong> .NET 8.0 / Python FastAPI</li>
+            <li><strong>Frontend:</strong> React/Angular with TypeScript</li>
+            <li><strong>Integration:</strong> Azure Logic Apps, Azure Functions</li>
+            <li><strong>Database:</strong> Azure Cosmos DB, Azure SQL</li>
+            <li><strong>Authentication:</strong> Azure AD, Service Principal Tokens</li>
+            <li><strong>Monitoring:</strong> Application Insights, Azure Monitor</li>
+          </ul>
+        </div>
+
+        <div className="bg-gray-800 rounded-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">2. Core Features & Use Cases</h2>
+          
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-semibold text-yellow-400 mb-3">2.1 Automated Epic & Story Generation</h3>
+              <p className="text-gray-300 mb-3"><strong>Functionality:</strong></p>
+              <ul className="list-disc list-inside text-gray-300 space-y-2 mb-4">
+                <li>AI analyzes business requirements documents</li>
+                <li>Generates properly structured epics following company standards</li>
+                <li>Creates technical and business stories with acceptance criteria</li>
+                <li>Assigns story points based on historical data and complexity analysis</li>
+              </ul>
+              
+              <div className="bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                <pre className="text-gray-300">{`class EpicGenerator:
+    def __init__(self, azure_openai_client):
+        self.ai_client = azure_openai_client
+        self.company_templates = load_company_templates()
+    
+    def generate_epic_from_requirements(self, requirements_doc):
+        # Extract key business objectives
+        objectives = self.extract_objectives(requirements_doc)
+        
+        # Generate epic structure
+        epic = self.ai_client.generate(epic_prompt)
+        stories = self.decompose_epic_to_stories(epic)
+        return epic, stories`}</pre>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-yellow-400 mb-3">2.2 Intelligent Daily Update Processing</h3>
+              <p className="text-gray-300 mb-3"><strong>Sample Update Flow:</strong></p>
+              <div className="bg-gray-900 rounded-lg p-4">
+                <p className="text-gray-400 mb-2">Team Member Input:</p>
+                <p className="text-gray-300 italic mb-4">"Today I completed the API integration for user authentication. 
+                Ran into some issues with token refresh that I'll need to investigate tomorrow. 
+                Also started reviewing the database schema changes."</p>
+                
+                <p className="text-gray-400 mb-2">AI Processing:</p>
+                <ol className="list-decimal list-inside text-gray-300 space-y-1">
+                  <li>Identifies ticket: USER-AUTH-101</li>
+                  <li>Updates status: In Progress → Testing</li>
+                  <li>Adds comment with details</li>
+                  <li>Creates subtask: "Investigate token refresh issues"</li>
+                  <li>Updates time tracking</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 rounded-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">3. Implementation Plan</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Phase 1: Foundation</h3>
+              <p className="text-sm text-gray-400 mb-2">Weeks 1-4</p>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Set up Azure infrastructure</li>
+                <li>• Configure Azure AD authentication</li>
+                <li>• Establish API connections</li>
+                <li>• Create base data models</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Phase 2: Core AI Services</h3>
+              <p className="text-sm text-gray-400 mb-2">Weeks 5-8</p>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Implement Epic/Story generator</li>
+                <li>• Build NLP processor</li>
+                <li>• Create board update engine</li>
+                <li>• Develop story pointing algorithm</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Phase 3: Integration</h3>
+              <p className="text-sm text-gray-400 mb-2">Weeks 9-12</p>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Teams channel integration</li>
+                <li>• Board synchronization</li>
+                <li>• Database setup</li>
+                <li>• API gateway configuration</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Phase 4: Analytics</h3>
+              <p className="text-sm text-gray-400 mb-2">Weeks 13-16</p>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• PM dashboard development</li>
+                <li>• Scrum Master insights</li>
+                <li>• Predictive analytics</li>
+                <li>• Reporting framework</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Phase 5: Launch</h3>
+              <p className="text-sm text-gray-400 mb-2">Weeks 17-20</p>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• UAT with pilot teams</li>
+                <li>• AI model fine-tuning</li>
+                <li>• Performance optimization</li>
+                <li>• Security audit</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 rounded-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4">4. Value Drivers & ROI</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-xl font-semibold text-yellow-400 mb-3">Time Savings</h3>
+              <ul className="text-gray-300 space-y-2">
+                <li><strong>Daily Standups:</strong> 15 min → 5 min (67% reduction)</li>
+                <li><strong>Board Updates:</strong> 30 min/day → 2 min (93% reduction)</li>
+                <li><strong>Sprint Planning:</strong> 4 hours → 2 hours (50% reduction)</li>
+                <li><strong>Status Reporting:</strong> 2 hours/week → 15 min (87% reduction)</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-xl font-semibold text-yellow-400 mb-3">Financial Impact</h3>
+              <p className="text-gray-300 mb-2">For a 50-person engineering organization:</p>
+              <ul className="text-gray-300 space-y-2">
+                <li><strong>Time Saved:</strong> ~400 hours/month</li>
+                <li><strong>Productivity Gain:</strong> $40,000/month (@$100/hour)</li>
+                <li><strong>Annual ROI:</strong> $480,000</li>
+                <li><strong>Implementation Cost:</strong> ~$150,000</li>
+                <li><strong>Payback Period:</strong> 4 months</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 rounded-xl p-8">
+          <h2 className="text-2xl font-bold text-white mb-4">5. Success Metrics & KPIs</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-3">Adoption Metrics</h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• User adoption rate (target: 90%)</li>
+                <li>• Daily active users</li>
+                <li>• Feature utilization rates</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-3">Efficiency Metrics</h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Average time to update boards</li>
+                <li>• Sprint planning duration</li>
+                <li>• Story estimation accuracy</li>
+                <li>• Sprint completion rates</li>
+              </ul>
+            </div>
+            
+            <div className="bg-gray-900 rounded-lg p-4">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-3">Quality Metrics</h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Story template compliance</li>
+                <li>• Estimation accuracy</li>
+                <li>• Blocker resolution time</li>
+                <li>• Sprint goal achievement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Dashboard Navigation Component
+  const DashboardNavigation = () => (
+    <div className={`fixed left-0 top-16 h-[calc(100vh-4rem)] bg-gray-900 transition-all duration-300 z-40 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+      <div className="p-4">
         <nav className="space-y-2">
           {[
             { id: 'dashboard', icon: Home, label: 'Dashboard' },
@@ -72,7 +716,7 @@ const App = () => {
 
   // Notification Component
   const Notification = () => (
-    <div className={`fixed top-4 right-4 bg-yellow-400 text-black px-6 py-4 rounded-lg shadow-xl transition-all transform ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'} z-50`}>
+    <div className={`fixed top-20 right-4 bg-yellow-400 text-black px-6 py-4 rounded-lg shadow-xl transition-all transform ${showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'} z-50`}>
       <div className="flex items-center space-x-3">
         <Sparkles className="w-5 h-5" />
         <div>
@@ -817,39 +1461,49 @@ const App = () => {
   // Main Layout
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navigation />
-      <Notification />
+      <TopNavigation />
       
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
-        <div className="p-6">
-          {/* Header */}
-          <div className="mb-6 flex items-center justify-between">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="lg:hidden text-gray-400 hover:text-white">
-              <Menu className="w-6 h-6" />
-            </button>
-            
-            <div className="flex items-center space-x-4 ml-auto">
-              <button className="relative text-gray-400 hover:text-white">
-                <Activity className="w-6 h-6" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full"></span>
-              </button>
-              <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-white font-semibold">JD</span>
+      {currentView === 'home' && <HomePage />}
+      
+      {currentView === 'documentation' && <DocumentationPage />}
+      
+      {currentView === 'dashboard' && (
+        <>
+          <DashboardNavigation />
+          <Notification />
+          
+          <div className={`transition-all duration-300 pt-16 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
+            <div className="p-6">
+              {/* Header */}
+              <div className="mb-6 flex items-center justify-between">
+                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-400 hover:text-white">
+                  <Menu className="w-6 h-6" />
+                </button>
+                
+                <div className="flex items-center space-x-4 ml-auto">
+                  <button className="relative text-gray-400 hover:text-white">
+                    <Activity className="w-6 h-6" />
+                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full"></span>
+                  </button>
+                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                    <span className="text-white font-semibold">JD</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Page Content */}
+              <div className="max-w-7xl mx-auto">
+                {currentPage === 'dashboard' && <DashboardPage />}
+                {currentPage === 'epics' && <EpicGeneratorPage />}
+                {currentPage === 'daily' && <DailyUpdatesPage />}
+                {currentPage === 'analytics' && <AnalyticsPage />}
+                {currentPage === 'ai-assistant' && <AIAssistantPage />}
+                {currentPage === 'settings' && <SettingsPage />}
               </div>
             </div>
           </div>
-
-          {/* Page Content */}
-          <div className="max-w-7xl mx-auto">
-            {currentPage === 'dashboard' && <DashboardPage />}
-            {currentPage === 'epics' && <EpicGeneratorPage />}
-            {currentPage === 'daily' && <DailyUpdatesPage />}
-            {currentPage === 'analytics' && <AnalyticsPage />}
-            {currentPage === 'ai-assistant' && <AIAssistantPage />}
-            {currentPage === 'settings' && <SettingsPage />}
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
